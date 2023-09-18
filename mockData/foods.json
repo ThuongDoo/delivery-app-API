@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Pizza Margherita",
+    "description": "Pizza klasik với sốt cà chua, phô mai và lá bạc hà.",
+    "price": 12.99,
+    "image": "pizza_margherita.jpg",
+    "category": "Pizza",
+    "discountPercentage": 0
+  },
+  {
+    "name": "Lasagna Bolognese",
+    "description": "Lasagna hấp dẫn với lớp lớp mỡ bò và sốt bơ.",
+    "price": 15.99,
+    "image": "lasagna_bolognese.jpg",
+    "category": "Pasta",
+    "discountPercentage": 0
+  },
+  {
+    "name": "Pasta Carbonara",
+    "description": "Mì ống tươi với sốt kem, trứng, phô mai và thịt hun khói.",
+    "price": 14.49,
+    "image": "pasta_carbonara.jpg",
+    "category": "Pasta",
+    "discountPercentage": 0
+  },
+  {
+    "name": "Risotto Hải Sản",
+    "description": "Risotto tươi ngon với hải sản và nước dùng ngon khó cưỡng.",
+    "price": 18.99,
+    "image": "risotto_hai_san.jpg",
+    "category": "Risotto",
+    "discountPercentage": 0
+  },
+  {
+    "name": "Tiramisu",
+    "description": "Tiramisu ngọt ngào với lớp bánh mềm và sô cô la.",
+    "price": 8.99,
+    "image": "tiramisu.jpg",
+    "category": "Dessert",
+    "discountPercentage": 0
+  }
+]
