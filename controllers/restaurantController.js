@@ -35,7 +35,6 @@ const deleteRestaurant = async (req, res) => {
     );
   }
   await mongoose.model("Food").deleteMany({ restaurant: restaurantId });
-  // await Restaurant.deleteOne({ _id: restaurantId });
   res.status(StatusCodes.OK).json({ restaurant });
 };
 
