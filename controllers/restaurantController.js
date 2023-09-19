@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const Restaurant = require("../models/Restaurant");
 const CustomError = require("../errors");
+const { default: mongoose } = require("mongoose");
 
 const getAllRestaurant = async (req, res) => {
   const restaurant = await Restaurant.find({}).populate("foods");
@@ -27,13 +28,14 @@ const createRestaurant = async (req, res) => {
 
 const deleteRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
-  const restaurant = await Restaurant.findById(restaurantId);
+  const restaurant = await Restaurant.findOneAndDelete({ _id: restaurantId });
   if (!restaurant) {
     throw new CustomError.NotFoundError(
       `No restaurant with id: ${restaurantId}`
     );
   }
-  await Restaurant.deleteOne({ _id: restaurantId });
+  await mongoose.model("Food").deleteMany({ restaurant: restaurantId });
+  // await Restaurant.deleteOne({ _id: restaurantId });
   res.status(StatusCodes.OK).json({ restaurant });
 };
 

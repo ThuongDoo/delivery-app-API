@@ -41,9 +41,4 @@ const RestaurantSchema = mongoose.Schema(
   }
 );
 
-RestaurantSchema.pre("deleteOne", async function () {
-  console.log("======");
-  await this.model("Food").deleteMany({ restaurant: this._id });
-});
-
 module.exports = mongoose.model("Restaurant", RestaurantSchema);
