@@ -35,7 +35,7 @@ app.use("/api/v1/restaurants", restaurantRouter);
 app.use("/api/v1/foods", foodRouter);
 
 app.use(notFound);
-// app.use(errorHandler);
+app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 const start = async () => {
@@ -48,5 +48,4 @@ const start = async () => {
     console.log(error);
   }
 };
-
 start();

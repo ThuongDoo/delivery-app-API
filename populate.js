@@ -8,7 +8,7 @@ const mockData2 = require("./mockData/foods.json");
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
-    await Food.create(mockData2);
+    await Restaurant.create(mockData1);
     console.log("Success!!!");
     process.exit(0);
   } catch (error) {

@@ -1,40 +1,38 @@
 const { StatusCodes } = require("http-status-codes");
 const Food = require("../models/Food");
 const Restaurant = require("../models/Restaurant");
+const CustomError = require("../errors");
 
 const getAllFoods = async (req, res) => {
-  res.status(StatusCodes.OK).send("get all foods");
+  const food = await Food.find({});
+  res.status(200).json({ food });
 };
 
 const getSingleFood = async (req, res) => {
-  res.status(StatusCodes.OK).send("get single food");
+  const { id: foodId } = req.params;
+  const food = await Food.findOne({ _id: foodId });
+  if (!food) {
+    throw new CustomError.NotFoundError(`No food with id: ${foodId}`);
+  }
+  console.log(food);
+  res.status(StatusCodes.OK).json({ food });
 };
 
 const createFood = async (req, res) => {
-  const { id: restaurantId } = req.params;
-  console.log(restaurantId);
-  const restaurant = await Restaurant.findById(restaurantId);
+  const food = req.body;
+  const restaurant = await Restaurant.findById(food.restaurant);
+  console.log(food);
   if (!restaurant) {
     res.status(404).json({ msg: "no restaurant" });
   }
-  const newFood = new Food({
-    restaurant: restaurant._id, // Đặt trường restaurant là _id của nhà hàng
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    image: req.body.image,
-    category: req.body.category,
-    discountPercentage: req.body.discountPercentage,
-  });
-
-  // Lưu món ăn mới vào cơ sở dữ liệu
-  const savedFood = await newFood.save();
+  const newFood = await Food.create(food);
+  console.log(newFood);
 
   // Cập nhật trường foods trong nhà hàng để thêm món ăn mới
-  restaurant.foods.push(savedFood);
+  restaurant.foods.push(newFood);
   await restaurant.save();
 
-  res.status(201).json({ food: savedFood });
+  res.status(201).json({ food: newFood });
 };
 
 const deleteFood = async (req, res) => {

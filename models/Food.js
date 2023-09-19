@@ -30,15 +30,15 @@ const FoodSchema = mongoose.Schema(
       type: String,
       default: "nothing",
     },
-    discoutPercentage: {
+    discountPercentage: {
       type: Number,
       default: 0,
     },
   },
   {
     timestamps: true,
-    // toJSON: { virtuals: true },
-    // toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 

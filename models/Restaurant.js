@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const Food = require("./Food");
 
 const RestaurantSchema = mongoose.Schema(
   {
@@ -37,9 +36,14 @@ const RestaurantSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-    // toJSON: { virtuals: true },
-    // toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+RestaurantSchema.pre("deleteOne", async function () {
+  console.log("======");
+  await this.model("Food").deleteMany({ restaurant: this._id });
+});
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);

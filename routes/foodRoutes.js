@@ -9,12 +9,7 @@ const {
   updateFood,
 } = require("../controllers/foodController");
 
-router.route("/").get(getAllFoods);
-router
-  .route("/:id")
-  .get(getSingleFood)
-  .delete(deleteFood)
-  .patch(updateFood)
-  .post(createFood);
+router.route("/").get(getAllFoods).post(createFood);
+router.route("/:id").get(getSingleFood).delete(deleteFood).patch(updateFood);
 
 module.exports = router;
