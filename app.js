@@ -3,6 +3,8 @@ require("express-async-errors");
 
 const express = require("express");
 const app = express();
+
+const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const rateLimiter = require("express-rate-limit");
 const xss = require("xss-clean");
@@ -14,6 +16,8 @@ const connectDB = require("./db/connect");
 // routers
 const foodRouter = require("./routes/foodRoutes");
 const restaurantRouter = require("./routes/restaurantRoutes");
+const featureRouter = require("./routes/featureRoutes");
+const categoryRouter = require("./routes/categoryRoutes");
 
 // middlewares
 const notFound = require("./middlewares/notFound");
@@ -30,9 +34,12 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(express.json());
+app.use(fileUpload());
 
 app.use("/api/v1/restaurants", restaurantRouter);
 app.use("/api/v1/foods", foodRouter);
+app.use("/api/v1/features", featureRouter);
+app.use("/api/v1/categories", categoryRouter);
 
 app.use(notFound);
 app.use(errorHandler);

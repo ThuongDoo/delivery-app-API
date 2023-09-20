@@ -8,7 +8,8 @@ const CategorySchema = mongoose.Schema(
     },
     image: {
       type: String,
-      default: "ha",
+      default:
+        "https://raw.githubusercontent.com/ThuongDoo/images/main/photo1646280815645-1646280816151764748403.webp",
     },
   },
   { timestamps: true }

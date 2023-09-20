@@ -24,11 +24,12 @@ const FoodSchema = mongoose.Schema(
     },
     image: {
       type: String,
-      default: "nothing",
+      default:
+        "https://raw.githubusercontent.com/ThuongDoo/images/main/photo1646280815645-1646280816151764748403.webp",
     },
     category: {
-      type: String,
-      default: "nothing",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
     },
     discountPercentage: {
       type: Number,

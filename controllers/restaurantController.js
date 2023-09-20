@@ -4,15 +4,70 @@ const CustomError = require("../errors");
 const { default: mongoose } = require("mongoose");
 
 const getAllRestaurant = async (req, res) => {
-  const restaurant = await Restaurant.find({}).populate("foods");
-  res.status(StatusCodes.OK).json({ restaurant });
+  const { name, latitude, longitude, numericFilters, sort, field } = req.query;
+  const queryObject = {};
+  if (name) {
+    queryObject.name = { $regex: name, $options: "i" };
+  }
+  if (latitude) {
+    queryObject.latitude = latitude;
+  }
+  if (longitude) {
+    queryObject.longitude = longitude;
+  }
+  if (numericFilters) {
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );
+    const options = ["avarageRating", "numOfReviews"];
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) };
+      }
+    });
+  }
+  let result = Restaurant.find(queryObject);
+  //sort
+  if (sort) {
+    const sortList = sort.split(",").join(" ");
+    result = result.sort(sortList);
+  }
+  if (field) {
+    const fieldList = field.split(",").join(" ");
+    result = result.select(fieldList);
+  }
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.skip) || 10;
+  const skip = (page - 1) * limit;
+  result = result.skip(skip).limit(limit);
+
+  const restaurant = await result.populate({
+    path: "foods",
+    populate: {
+      path: "category",
+    },
+  });
+  res.status(StatusCodes.OK).json({ restaurant, nbHits: restaurant.length });
 };
 
 const getSingleRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
-  const restaurant = await Restaurant.findOne({ _id: restaurantId }).populate(
-    "foods"
-  );
+  const restaurant = await Restaurant.findOne({ _id: restaurantId }).populate({
+    path: "foods",
+    populate: {
+      path: "category",
+    },
+  });
   if (!restaurant) {
     throw new CustomError.NotFoundError(
       `No restaurant with id: ${restaurantId}`

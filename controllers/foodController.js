@@ -4,13 +4,13 @@ const Restaurant = require("../models/Restaurant");
 const CustomError = require("../errors");
 
 const getAllFoods = async (req, res) => {
-  const food = await Food.find({});
-  res.status(200).json({ food });
+  const food = await Food.find({}).populate("category");
+  res.status(200).json({ food, nbHits: food.length });
 };
 
 const getSingleFood = async (req, res) => {
   const { id: foodId } = req.params;
-  const food = await Food.findOne({ _id: foodId });
+  const food = await Food.findOne({ _id: foodId }).populate("category");
   if (!food) {
     throw new CustomError.NotFoundError(`No food with id: ${foodId}`);
   }
@@ -36,11 +36,27 @@ const createFood = async (req, res) => {
 };
 
 const deleteFood = async (req, res) => {
-  res.status(StatusCodes.OK).send("delete food");
+  const { id: foodId } = req.params;
+  // const {restaurantId} = req.body
+  const food = await Food.findOneAndDelete({ _id: foodId });
+  if (!food) {
+    throw new CustomError.NotFoundError(`No food with ID: ${foodId}`);
+  }
+
+  // const restaurant = await Restaurant.findById(restaurantId)
+  // if(!restaurant){
+  //   throw new CustomError.NotFoundError(`No restaurant with ID: ${restaurantId}`)
+  // }
+  res.status(StatusCodes.OK).json({ food });
 };
 
 const updateFood = async (req, res) => {
-  res.status(StatusCodes.OK).send("update food");
+  const { id: foodId } = req.params;
+  const food = await Food.findOneAndUpdate({ _id: foodId }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(StatusCodes.OK).send({ food });
 };
 
 module.exports = {
