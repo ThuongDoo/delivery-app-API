@@ -5,12 +5,12 @@ const FeatureSchema = Schema(
   {
     name: {
       type: String,
-      require: [true, "Please provide feature name"],
+      required: [true, "Please provide feature name"],
       maxlength: 50,
     },
     description: {
       type: String,
-      require: [true, "Please provide feature description"],
+      required: [true, "Please provide feature description"],
       maxlength: 200,
     },
     image: {

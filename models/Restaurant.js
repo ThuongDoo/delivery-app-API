@@ -5,7 +5,7 @@ const RestaurantSchema = mongoose.Schema(
     name: {
       type: String,
       maxlength: 50,
-      require: [true, "Please provide restaurant name"],
+      required: [true, "Please provide restaurant name"],
     },
     image: {
       type: String,
