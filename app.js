@@ -27,7 +27,7 @@ const userRouter = require("./routes/userRoutes");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMS: 15 * 60 * 1000,
@@ -55,7 +55,7 @@ app.use("/api/v1/users", userRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
