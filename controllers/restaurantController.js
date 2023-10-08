@@ -6,6 +6,9 @@ const { default: mongoose } = require("mongoose");
 const getAllRestaurant = async (req, res) => {
   const { name, latitude, longitude, numericFilters, sort, field } = req.query;
   const queryObject = {};
+  if (req.user.role == "vendor") {
+    queryObject.user = req.user.userId;
+  }
   if (name) {
     queryObject.name = { $regex: name, $options: "i" };
   }
@@ -95,7 +98,7 @@ const deleteRestaurant = async (req, res) => {
 
 const updateRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
-  const restaurant = Restaurant.findOneAndUpdate(
+  const restaurant = await Restaurant.findOneAndUpdate(
     { _id: restaurantId },
     req.body,
     {

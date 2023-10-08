@@ -17,11 +17,11 @@ const {
 router
   .route("/")
   .get(getAllFoods)
-  .post(authenticateUser, authorizePermissions("admin"), createFood);
+  .post(authenticateUser, authorizePermissions("admin", "vendor"), createFood);
 router
   .route("/:id")
   .get(getSingleFood)
-  .delete(authenticateUser, authorizePermissions("admin"), deleteFood)
-  .patch(authenticateUser, authorizePermissions("admin"), updateFood);
+  .delete(authenticateUser, authorizePermissions("admin", "vendor"), deleteFood)
+  .patch(authenticateUser, authorizePermissions("admin", "vendor"), updateFood);
 
 module.exports = router;

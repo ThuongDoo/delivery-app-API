@@ -31,7 +31,7 @@ const errorHandler = require("./middlewares/errorHandler");
 app.use(
   rateLimiter({
     windowMS: 15 * 60 * 1000,
-    max: 60,
+    max: 600,
   })
 );
 app.use(helmet());

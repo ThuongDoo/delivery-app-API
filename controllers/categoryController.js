@@ -7,6 +7,29 @@ const getAllCategory = async (req, res) => {
   res.status(StatusCodes.OK).json({ category });
 };
 
+const getSingleCategory = async (req, res) => {
+  const { id: categoryId } = req.params;
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    throw new CustomError.NotFoundError(`No category with id: ${categoryId}`);
+  }
+
+  res.status(StatusCodes.OK).json({ category });
+};
+
+const updateCategory = async (req, res) => {
+  const { id: categoryId } = req.params;
+  const category = await Category.findOneAndUpdate(
+    { _id: categoryId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(StatusCodes.OK).send({ category });
+};
+
 const createCategory = async (req, res) => {
   const category = await Category.create(req.body);
   res.status(StatusCodes.CREATED).json({ category });
@@ -21,4 +44,10 @@ const deleteCategory = async (req, res) => {
   res.status(StatusCodes.OK).json({ category });
 };
 
-module.exports = { getAllCategory, createCategory, deleteCategory };
+module.exports = {
+  getAllCategory,
+  createCategory,
+  deleteCategory,
+  updateCategory,
+  getSingleCategory,
+};

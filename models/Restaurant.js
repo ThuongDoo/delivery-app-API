@@ -12,6 +12,11 @@ const RestaurantSchema = mongoose.Schema(
       default:
         "https://raw.githubusercontent.com/ThuongDoo/images/main/photo1646280815645-1646280816151764748403.webp",
     },
+    description: {
+      type: String,
+      maxlength: 500,
+      default: "",
+    },
     avarageRating: {
       type: Number,
       default: 0,
@@ -26,13 +31,14 @@ const RestaurantSchema = mongoose.Schema(
         ref: "Food",
       },
     ],
-    latitude: {
-      type: Number,
-      default: 0,
+    address: {
+      type: String,
+      default: "",
     },
-    longitude: {
-      type: Number,
-      default: 0,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide restaurant user"],
     },
   },
   {

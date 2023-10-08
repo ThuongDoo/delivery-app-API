@@ -16,12 +16,24 @@ const {
 
 router
   .route("/")
-  .get(getAllRestaurant)
-  .post(authenticateUser, authorizePermissions("admin"), createRestaurant);
+  .get(authenticateUser, getAllRestaurant)
+  .post(
+    authenticateUser,
+    authorizePermissions("admin", "vendor"),
+    createRestaurant
+  );
 router
   .route("/:id")
   .get(getSingleRestaurant)
-  .delete(authenticateUser, authorizePermissions("admin"), deleteRestaurant)
-  .patch(authenticateUser, authorizePermissions("admin"), updateRestaurant);
+  .delete(
+    authenticateUser,
+    authorizePermissions("admin", "vendor"),
+    deleteRestaurant
+  )
+  .patch(
+    authenticateUser,
+    authorizePermissions("admin", "vendor"),
+    updateRestaurant
+  );
 
 module.exports = router;
