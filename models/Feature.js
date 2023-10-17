@@ -22,7 +22,7 @@ const FeatureSchema = Schema(
       type: Number,
       default: 0,
     },
-    restaurants: [
+    restaurant: [
       {
         type: Schema.Types.ObjectId,
         ref: "Restaurant",

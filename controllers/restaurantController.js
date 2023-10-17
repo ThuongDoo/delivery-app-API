@@ -4,7 +4,8 @@ const CustomError = require("../errors");
 const { default: mongoose } = require("mongoose");
 
 const getAllRestaurant = async (req, res) => {
-  const { name, latitude, longitude, numericFilters, sort, field } = req.query;
+  const { name, latitude, longitude, numericFilters, sort, field, isPopulate } =
+    req.query;
   const queryObject = {};
   if (req.user.role == "vendor") {
     queryObject.user = req.user.userId;
@@ -54,19 +55,24 @@ const getAllRestaurant = async (req, res) => {
   const skip = (page - 1) * limit;
   result = result.skip(skip).limit(limit);
 
-  const restaurant = await result.populate({
-    path: "foods",
-    populate: {
-      path: "category",
-    },
-  });
+  let restaurant;
+  if (isPopulate) {
+    restaurant = await result.populate({
+      path: "food",
+      populate: {
+        path: "category",
+      },
+    });
+  } else {
+    restaurant = await result;
+  }
   res.status(StatusCodes.OK).json({ restaurant, nbHits: restaurant.length });
 };
 
 const getSingleRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
   const restaurant = await Restaurant.findOne({ _id: restaurantId }).populate({
-    path: "foods",
+    path: "food",
     populate: {
       path: "category",
     },

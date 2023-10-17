@@ -29,7 +29,7 @@ const createFood = async (req, res) => {
   console.log(newFood);
 
   // Cập nhật trường foods trong nhà hàng để thêm món ăn mới
-  restaurant.foods.push(newFood);
+  restaurant.food.push(newFood);
   await restaurant.save();
 
   res.status(201).json({ food: newFood });

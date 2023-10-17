@@ -1,20 +1,62 @@
 [
   {
-    "name": "Nhà Hàng Mekong"
+      "name": "La Bella Italia",
+      "address": "123 Main Street, Cityville",
+      "description": "Nhà hàng Ý sang trọng với menu phong phú gồm các món pasta và pizza ngon miệng."
   },
   {
-    "name": "Nhà Hàng Italia Bella"
+      "name": "Sushi Delight",
+      "address": "456 Oak Avenue, Townsville",
+      "description": "Nhà hàng sushi hấp dẫn với các sashimi và sushi tươi ngon, phục vụ trong môi trường ấm cúng."
   },
   {
-    "name": "Nhà Hàng Mekdong"
+      "name": "Taste of India",
+      "address": "789 Spice Road, Curryville",
+      "description": "Nhà hàng Ấn Độ đậm vị với các món curry và món ăn truyền thống hấp dẫn."
   },
   {
-    "name": "Nhà Hàng Italia ddBella"
+      "name": "Grill & Chill",
+      "address": "101 BBQ Lane, Grilltown",
+      "description": "Nhà hàng steakhouse nổi tiếng với các loại thịt nướng và các lựa chọn món phụ phong phú."
   },
   {
-    "name": "Nhà Hàng Mekoddng"
+      "name": "Green Bites Cafe",
+      "address": "234 Healthy Street, Freshville",
+      "description": "Nhà hàng dành cho người ưa thích ẩm thực sức khỏe với các món ăn chay và organic."
   },
   {
-    "name": "Nhà Hàng Italdddia Bella"
+      "name": "Seafood Harbor",
+      "address": "567 Ocean Drive, Seafood City",
+      "description": "Nhà hàng hải sản với các món hấp, nướng và hấp dẫn trên thực đơn."
+  },
+  {
+      "name": "Mama's Pizzeria",
+      "address": "876 Family Lane, Pizza Park",
+      "description": "Nhà hàng pizza gia đình với pizza tươi ngon và các món ăn Ý khác."
+  },
+  {
+      "name": "The Golden Wok",
+      "address": "321 Wok Street, Woksville",
+      "description": "Nhà hàng Trung Hoa phục vụ các món chảo và lẩu truyền thống."
+  },
+  {
+      "name": "Burger Haven",
+      "address": "654 Burger Boulevard, Burger Town",
+      "description": "Nhà hàng burger với các loại burger tươi ngon và món kem."
+  },
+  {
+      "name": "Cafe Paris",
+      "address": "987 French Avenue, Parisville",
+      "description": "Quán cafe kiểu Pháp với cafe thơm ngon và bánh ngọt hấp dẫn."
+  },
+  {
+      "name": "Mediterranean Oasis",
+      "address": "543 Olive Street, Mediterranean City",
+      "description": "Nhà hàng Địa Trung Hải với các món thịt nướng và món truyền thống."
+  },
+  {
+      "name": "Sizzling Tandoor",
+      "address": "876 Spicy Lane, Tandoor Town",
+      "description": "Nhà hàng Ấn Độ với các món tandoori và các món ăn ngon khác."
   }
 ]

@@ -17,7 +17,7 @@ const RestaurantSchema = mongoose.Schema(
       maxlength: 500,
       default: "",
     },
-    avarageRating: {
+    averageRating: {
       type: Number,
       default: 0,
     },
@@ -25,7 +25,7 @@ const RestaurantSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    foods: [
+    food: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Food",

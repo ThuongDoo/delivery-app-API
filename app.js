@@ -51,11 +51,11 @@ app.get("/", (req, res) => {
   res.send("<h1>delivery App</h1>");
 });
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/restaurants", restaurantRouter);
-app.use("/api/v1/foods", foodRouter);
-app.use("/api/v1/features", featureRouter);
-app.use("/api/v1/categories", categoryRouter);
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/restaurant", restaurantRouter);
+app.use("/api/v1/food", foodRouter);
+app.use("/api/v1/feature", featureRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use(notFound);
 app.use(errorHandler);

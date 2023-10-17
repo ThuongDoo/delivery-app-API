@@ -3,7 +3,14 @@ const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
 const getAllCategory = async (req, res) => {
-  const category = await Category.find({});
+  let result = Category.find({});
+  const { field } = req.query;
+  if (field) {
+    const fieldList = field.split(",").join(" ");
+    result = result.select(fieldList);
+  }
+  const category = await result;
+
   res.status(StatusCodes.OK).json({ category });
 };
 

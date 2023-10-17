@@ -9,23 +9,23 @@ const {
 const {
   getAllFeature,
   createFeature,
-  addFood,
-  deleteFood,
+  addRestaurant,
+  deleteRestaurant,
   updateFeature,
   deleteFeature,
 } = require("../controllers/featureController");
 
 router
   .route("/")
-  .get(getAllFeature)
+  .get(authenticateUser, getAllFeature)
   .post(authenticateUser, authorizePermissions("admin"), createFeature);
 router
   .route("/:id")
   .patch(authenticateUser, authorizePermissions("admin"), updateFeature)
   .delete(authenticateUser, authorizePermissions("admin"), deleteFeature);
 router
-  .route("/foods/:id")
-  .post(authenticateUser, authorizePermissions("admin"), addFood)
-  .patch(authenticateUser, authorizePermissions("admin"), deleteFood);
+  .route("/restaurant/:id")
+  .post(authenticateUser, authorizePermissions("admin"), addRestaurant)
+  .patch(authenticateUser, authorizePermissions("admin"), deleteRestaurant);
 
 module.exports = router;

@@ -16,12 +16,12 @@ const {
 
 router
   .route("/")
-  .get(getAllCategory)
+  .get(authenticateUser, getAllCategory)
   .post(authenticateUser, authorizePermissions("admin"), createCategory);
 router
   .route("/:id")
   .delete(authenticateUser, authorizePermissions("admin"), deleteCategory)
   .get(authenticateUser, getSingleCategory)
-  .patch(updateCategory);
+  .patch(authenticateUser, authorizePermissions("admin"), updateCategory);
 
 module.exports = router;

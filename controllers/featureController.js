@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const Feature = require("../models/Feature");
-const Food = require("../models/Food");
 const CustomError = require("../errors");
+const Restaurant = require("../models/Restaurant");
 
 const getAllFeature = async (req, res) => {
   const { sort } = req.query;
@@ -11,8 +11,11 @@ const getAllFeature = async (req, res) => {
     const sortList = sort.split(",").join(" ");
     result = result.sort(sortList);
   }
-  const feature = await result.populate("foods");
-  res.status(StatusCodes.OK).json({ feature, nbHits: feature.length });
+  const feature = await result.populate({
+    path: "restaurant",
+    select: "name image",
+  });
+  res.status(StatusCodes.OK).json({ feature });
 };
 
 const createFeature = async (req, res) => {
@@ -20,12 +23,14 @@ const createFeature = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ feature });
 };
 
-const addFood = async (req, res) => {
+const addRestaurant = async (req, res) => {
   const { id: featureId } = req.params;
-  const { foodId } = req.body;
-  const food = await Food.findById(foodId);
-  if (!food) {
-    throw new CustomError.NotFoundError(`No food with ID: ${foodId}`);
+  const { restaurantId } = req.body;
+  const restaurant = await Restaurant.findById(restaurantId);
+  if (!restaurant) {
+    throw new CustomError.NotFoundError(
+      `No restaurant with ID: ${restaurantId}`
+    );
   }
 
   const feature = await Feature.findById(featureId);
@@ -33,21 +38,23 @@ const addFood = async (req, res) => {
     throw new CustomError.NotFoundError(`No feature with ID: ${featureId}`);
   }
 
-  food.discountPercentage = feature.discountPercentage;
-  await food.save();
+  // food.discountPercentage = feature.discountPercentage;
+  // await food.save();
 
-  feature.foods.push(food);
+  feature.restaurant.push(restaurant);
   await feature.save();
 
   res.status(StatusCodes.CREATED).json({ feature });
 };
 
-const deleteFood = async (req, res) => {
+const deleteRestaurant = async (req, res) => {
   const { id: featureId } = req.params;
-  const { foodId } = req.body;
-  const food = await Food.findById(foodId);
-  if (!food) {
-    throw new CustomError.BadRequestError(`No food with ID: ${foodId}`);
+  const { restaurantId } = req.body;
+  const restaurant = await Restaurant.findById(restaurantId);
+  if (!restaurant) {
+    throw new CustomError.BadRequestError(
+      `No restaurant with ID: ${restaurantId}`
+    );
   }
 
   const feature = await Feature.findById(featureId);
@@ -55,17 +62,17 @@ const deleteFood = async (req, res) => {
     throw new CustomError.BadRequestError(featureId);
   }
 
-  food.discountPercentage = 0;
-  await food.save();
+  // food.discountPercentage = 0;
+  // await food.save();
 
-  await feature.updateOne({ $pull: { foods: foodId } });
+  await feature.updateOne({ $pull: { restaurant: restaurantId } });
 
-  res.status(StatusCodes.OK).json({ food });
+  res.status(StatusCodes.OK).json({ restaurant });
 };
 
 const updateFeature = async (req, res) => {
   const { id: featureId } = req.params;
-  const { discountPercentage } = req.body;
+  // const { discountPercentage } = req.body;
   const feature = await Feature.findOneAndUpdate({ _id: featureId }, req.body, {
     new: true,
     runValidators: true,
@@ -73,12 +80,12 @@ const updateFeature = async (req, res) => {
   if (!feature) {
     throw new CustomError.NotFoundError(`No feature with ID: ${featureId}`);
   }
-  const foodsId = feature.foods;
-  const foods = await Food.find({ _id: { $in: foodsId } });
-  foods.forEach(async (food) => {
-    food.discountPercentage = discountPercentage;
-    await food.save();
-  });
+  // const foodsId = feature.food;
+  // const foods = await Food.find({ _id: { $in: foodsId } });
+  // foods.forEach(async (food) => {
+  //   food.discountPercentage = discountPercentage;
+  //   await food.save();
+  // });
   res.status(StatusCodes.OK).json({ feature });
 };
 
@@ -88,12 +95,12 @@ const deleteFeature = async (req, res) => {
   if (!feature) {
     throw new CustomError.NotFoundError(`No feture with ID: ${featureId}`);
   }
-  const foodsId = feature.foods;
-  const foods = await Food.find({ _id: { $in: foodsId } });
-  foods.forEach(async (food) => {
-    food.discountPercentage = 0;
-    await food.save();
-  });
+  // const foodsId = feature.food;
+  // const foods = await Food.find({ _id: { $in: foodsId } });
+  // foods.forEach(async (food) => {
+  //   food.discountPercentage = 0;
+  //   await food.save();
+  // });
 
   res.status(StatusCodes.OK).json({ feature });
 };
@@ -101,8 +108,8 @@ const deleteFeature = async (req, res) => {
 module.exports = {
   getAllFeature,
   createFeature,
-  addFood,
-  deleteFood,
+  addRestaurant,
+  deleteRestaurant,
   updateFeature,
   deleteFeature,
 };
