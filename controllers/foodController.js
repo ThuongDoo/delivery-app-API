@@ -4,13 +4,13 @@ const Restaurant = require("../models/Restaurant");
 const CustomError = require("../errors");
 
 const getAllFoods = async (req, res) => {
-  const food = await Food.find({}).populate("category");
+  const food = await Food.find({});
   res.status(200).json({ food, nbHits: food.length });
 };
 
 const getSingleFood = async (req, res) => {
   const { id: foodId } = req.params;
-  const food = await Food.findOne({ _id: foodId }).populate("category");
+  const food = await Food.findOne({ _id: foodId });
   if (!food) {
     throw new CustomError.NotFoundError(`No food with id: ${foodId}`);
   }

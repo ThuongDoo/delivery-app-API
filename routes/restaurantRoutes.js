@@ -12,6 +12,8 @@ const {
   createRestaurant,
   deleteRestaurant,
   updateRestaurant,
+  addCategory,
+  deleteCategory,
 } = require("../controllers/restaurantController");
 
 router
@@ -34,6 +36,15 @@ router
     authenticateUser,
     authorizePermissions("admin", "vendor"),
     updateRestaurant
+  );
+
+router
+  .route("/category/:id")
+  .patch(authenticateUser, authorizePermissions("admin", "vendor"), addCategory)
+  .delete(
+    authenticateUser,
+    authorizePermissions("admin", "vendor"),
+    deleteCategory
   );
 
 module.exports = router;

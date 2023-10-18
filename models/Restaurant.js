@@ -31,6 +31,12 @@ const RestaurantSchema = mongoose.Schema(
         ref: "Food",
       },
     ],
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
     address: {
       type: String,
       default: "",

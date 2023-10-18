@@ -2,10 +2,19 @@ const { StatusCodes } = require("http-status-codes");
 const Restaurant = require("../models/Restaurant");
 const CustomError = require("../errors");
 const { default: mongoose } = require("mongoose");
+const Category = require("../models/Category");
 
 const getAllRestaurant = async (req, res) => {
-  const { name, latitude, longitude, numericFilters, sort, field, isPopulate } =
-    req.query;
+  const {
+    name,
+    latitude,
+    longitude,
+    numericFilters,
+    sort,
+    field,
+    populate,
+    category,
+  } = req.query;
   const queryObject = {};
   if (req.user.role == "vendor") {
     queryObject.user = req.user.userId;
@@ -18,6 +27,9 @@ const getAllRestaurant = async (req, res) => {
   }
   if (longitude) {
     queryObject.longitude = longitude;
+  }
+  if (category) {
+    queryObject.category = category;
   }
   if (numericFilters) {
     const operatorMap = {
@@ -56,13 +68,9 @@ const getAllRestaurant = async (req, res) => {
   result = result.skip(skip).limit(limit);
 
   let restaurant;
-  if (isPopulate) {
-    restaurant = await result.populate({
-      path: "food",
-      populate: {
-        path: "category",
-      },
-    });
+  if (populate) {
+    const populateList = populate.split(",");
+    restaurant = await result.populate({ path: "category" });
   } else {
     restaurant = await result;
   }
@@ -73,9 +81,6 @@ const getSingleRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
   const restaurant = await Restaurant.findOne({ _id: restaurantId }).populate({
     path: "food",
-    populate: {
-      path: "category",
-    },
   });
   if (!restaurant) {
     throw new CustomError.NotFoundError(
@@ -120,10 +125,46 @@ const updateRestaurant = async (req, res) => {
   res.status(StatusCodes.OK).json({ restaurant });
 };
 
+const addCategory = async (req, res) => {
+  const { id: restaurantId } = req.params;
+  const restaurant = await Restaurant.findById(restaurantId);
+  if (!restaurant) {
+    res.status(404).json({ msg: "no restaurant" });
+    return;
+  }
+  const { category } = req.body;
+  restaurant.category.push(category);
+  await restaurant.save();
+  res.status(StatusCodes.OK).json({ restaurant });
+};
+
+const deleteCategory = async (req, res) => {
+  const { id: restaurantId } = req.params;
+  const restaurant = await Restaurant.findById(restaurantId);
+  const { category: categoryId } = req.body;
+  const category = await Category.findById(categoryId);
+  if (!restaurant) {
+    res.status(StatusCodes.NOT_FOUND).json({ msg: "No Restaurant Found" });
+    return;
+  }
+  if (!category) {
+    res.status(StatusCodes.NOT_FOUND).json({ msg: "No Category Foung" });
+    return;
+  }
+  const updateCategories = restaurant.category.filter((cat) => {
+    return cat.toString() !== categoryId;
+  });
+  restaurant.category = updateCategories;
+  await restaurant.save();
+  res.status(StatusCodes.OK).json({ restaurant });
+};
+
 module.exports = {
   getAllRestaurant,
   getSingleRestaurant,
   createRestaurant,
   deleteRestaurant,
   updateRestaurant,
+  addCategory,
+  deleteCategory,
 };
