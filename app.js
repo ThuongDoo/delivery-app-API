@@ -22,6 +22,7 @@ const restaurantRouter = require("./routes/restaurantRoutes");
 const featureRouter = require("./routes/featureRoutes");
 const categoryRouter = require("./routes/categoryRoutes");
 const userRouter = require("./routes/userRoutes");
+const basketRouter = require("./routes/basketRoutes");
 
 // middlewares
 const notFound = require("./middlewares/notFound");
@@ -56,6 +57,7 @@ app.use("/api/v1/food", foodRouter);
 app.use("/api/v1/feature", featureRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/basket", basketRouter);
 
 app.use(notFound);
 app.use(errorHandler);
