@@ -6,10 +6,24 @@ const getBasketByUser = async (req, res) => {
   const { id: userId } = req.params;
   let basket = await Basket.findOne({ user: userId }).populate({
     path: "items.food",
+    populate: {
+      path: "restaurant",
+      select: "name _id image",
+    },
   });
   if (!basket) {
     basket = await Basket.create({ user: userId });
   }
+  basket.items.sort((a, b) => {
+    if (a.food.restaurant._id < b.food.restaurant._id) {
+      return -1;
+    } else if (a.food.restaurant._id > b.food.restaurant._id) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  // const basketJson = JSON.stringify(basket);
   res.status(StatusCodes.OK).json(basket);
 };
 
@@ -52,4 +66,10 @@ const deleteItem = async (req, res) => {
   res.status(StatusCodes.OK).json(basket);
 };
 
-module.exports = { getBasketByUser, updateBasket, deleteItem };
+const deleteMany = async (req, res) => {
+  const { id: userId } = req.params;
+  const basket = await Basket.deleteMany({ user: userId });
+  res.status(StatusCodes.OK).json({ msg: "Success" });
+};
+
+module.exports = { getBasketByUser, updateBasket, deleteItem, deleteMany };
