@@ -6,9 +6,22 @@ const {
   authorizePermissions,
 } = require("../middlewares/authentication");
 
-const { createOrder } = require("../controllers/orderController");
+const {
+  createOrder,
+  getAllOrder,
+  getSingleOrder,
+} = require("../controllers/orderController");
 
 router
   .route("/:id")
-  .post(authenticateUser, authorizePermissions("user"), createOrder);
+  .post(authenticateUser, authorizePermissions("user"), createOrder)
+  .get(authenticateUser, authorizePermissions("user", "vendor"), getAllOrder);
+
+router
+  .route("/singleOrder/:id")
+  .get(
+    authenticateUser,
+    authorizePermissions("user", "vendor"),
+    getSingleOrder
+  );
 module.exports = router;

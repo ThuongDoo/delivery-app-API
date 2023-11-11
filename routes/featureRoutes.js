@@ -8,6 +8,7 @@ const {
 
 const {
   getAllFeature,
+  getRestaurantByFeature,
   createFeature,
   addRestaurant,
   deleteRestaurant,
@@ -22,7 +23,8 @@ router
 router
   .route("/:id")
   .patch(authenticateUser, authorizePermissions("admin"), updateFeature)
-  .delete(authenticateUser, authorizePermissions("admin"), deleteFeature);
+  .delete(authenticateUser, authorizePermissions("admin"), deleteFeature)
+  .get(authenticateUser, getRestaurantByFeature);
 router
   .route("/restaurant/:id")
   .post(authenticateUser, authorizePermissions("admin"), addRestaurant)

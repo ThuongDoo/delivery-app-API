@@ -23,6 +23,14 @@ const createFeature = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ feature });
 };
 
+const getRestaurantByFeature = async (req, res) => {
+  const { id: featureId } = req.params;
+  const feature = await Feature.findById(featureId).populate({
+    path: "restaurant",
+  });
+  res.status(StatusCodes.OK).json({ feature });
+};
+
 const addRestaurant = async (req, res) => {
   const { id: featureId } = req.params;
   const { restaurantId } = req.body;
@@ -107,6 +115,7 @@ const deleteFeature = async (req, res) => {
 
 module.exports = {
   getAllFeature,
+  getRestaurantByFeature,
   createFeature,
   addRestaurant,
   deleteRestaurant,

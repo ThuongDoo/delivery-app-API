@@ -27,7 +27,7 @@ const getBasketByUser = async (req, res) => {
   res.status(StatusCodes.OK).json(basket);
 };
 
-const updateBasket = async (req, res) => {
+const addToBasket = async (req, res) => {
   const { id: userId } = req.params;
   const { items } = req.body;
   let basket = await Basket.findOne({ user: userId });
@@ -66,10 +66,23 @@ const deleteItem = async (req, res) => {
   res.status(StatusCodes.OK).json(basket);
 };
 
-const deleteMany = async (req, res) => {
+const updateBasket = async (req, res) => {
   const { id: userId } = req.params;
-  const basket = await Basket.deleteMany({ user: userId });
+  console.log("update");
+  const data = req.body;
+  console.log(data);
+  const total = [];
+  data.forEach((restaurant) => {
+    restaurant.items.forEach((item) => {
+      total.push({ food: item.food._id, quantity: item.quantity });
+    });
+  });
+  console.log("=======");
+  console.log(total);
+  const basket = await Basket.findOne({ user: userId });
+  basket.items = total;
+  await basket.save();
   res.status(StatusCodes.OK).json({ msg: "Success" });
 };
 
-module.exports = { getBasketByUser, updateBasket, deleteItem, deleteMany };
+module.exports = { getBasketByUser, addToBasket, deleteItem, updateBasket };

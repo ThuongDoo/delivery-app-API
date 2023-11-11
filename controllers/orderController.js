@@ -16,9 +16,28 @@ const createOrder = async (req, res) => {
       return acc + item.food.price * item.quantity;
     }, 0);
 
-    order.total = total;
+    order.total = total + 15000;
     await order.save();
   }
   res.status(StatusCodes.OK).json({ msg: "Success" });
 };
-module.exports = { createOrder };
+
+const getAllOrder = async (req, res) => {
+  const { id: userId } = req.params;
+  const order = await Order.find({ user: userId }).populate([
+    {
+      path: "restaurant",
+      select: "name image",
+    },
+    { path: "items.food", select: "name" },
+  ]);
+
+  res.status(StatusCodes.OK).json(order);
+};
+
+const getSingleOrder = async (req, res) => {
+  const { id: orderId } = req.params;
+  const order = await Order.findById(orderId);
+  res.status(StatusCodes.OK).json(order);
+};
+module.exports = { createOrder, getAllOrder, getSingleOrder };

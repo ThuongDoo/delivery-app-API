@@ -8,16 +8,19 @@ const {
 
 const {
   getBasketByUser,
-  updateBasket,
+  addToBasket,
   deleteItem,
-  deleteMany,
+  updateBasket,
 } = require("../controllers/basketController");
 
 router
   .route("/:id")
   .get(authenticateUser, authorizePermissions("user"), getBasketByUser)
-  .patch(authenticateUser, authorizePermissions("user"), updateBasket)
-  .delete(authenticateUser, authorizePermissions("user"), deleteMany);
+  .patch(authenticateUser, authorizePermissions("user"), addToBasket);
+
+router
+  .route("/update/:id")
+  .patch(authenticateUser, authorizePermissions("user"), updateBasket);
 
 router
   .route("/:userId/:foodId")
