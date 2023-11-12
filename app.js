@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
-const serverless = require("serverless-http");
+// const serverless = require("serverless-http");
 
 const express = require("express");
 const app = express();
@@ -31,7 +31,7 @@ const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 
 // app.set("trust proxy", 1);
-connectDB(process.env.MONGO_URL);
+// connectDB(process.env.MONGO_URL);
 
 app.use(
   rateLimiter({
@@ -42,7 +42,7 @@ app.use(
 app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
   })
 );
@@ -67,17 +67,17 @@ app.use("/api/v1/order", orderRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-// const port = process.env.PORT || 4000;
-// const start = async () => {
-//   try {
-//     await connectDB(process.env.MONGO_URL);
-//     app.listen(port, () => {
-//       console.log(`SERVER IS LISTENING ON PORT ${port}...`);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-// start();
+const port = process.env.PORT || 4000;
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URL);
+    app.listen(port, () => {
+      console.log(`SERVER IS LISTENING ON PORT ${port}...`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+start();
 
-export const handler = serverless(app);
+// export const handler = serverless(app);
