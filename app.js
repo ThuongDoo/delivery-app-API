@@ -54,7 +54,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use(fileUpload());
 
 app.get("/", (req, res) => {
-  res.send("<h1>delivery App</h1>");
+  res.send("<h1>Delivery App</h1>");
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/restaurant", restaurantRouter);
