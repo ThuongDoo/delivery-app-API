@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const CustomError = require("../errors");
+const bcrypt = require("bcryptjs");
+
 const { StatusCodes } = require("http-status-codes");
 const { attachCookiesToResponse, createTokenUser } = require("../utils");
 
@@ -10,6 +12,9 @@ const register = async (req, res) => {
   //   throw new CustomError.BadRequestError("Can't create admin role");
   // }
   const user = new User({ email, name, password, role });
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  // next();
   await user.save();
   res.status(StatusCodes.CREATED).json({ user: { email, name, role } });
 };
@@ -26,6 +31,7 @@ const login = async (req, res) => {
 
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
+    console.log("login");
     throw new CustomError.UnauthenticatedError("Invalid credentials");
   }
   const tokenUser = createTokenUser(user);

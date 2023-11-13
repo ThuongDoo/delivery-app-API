@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
+const bcrypt = require("bcryptjs");
+
 const {
   createTokenUser,
   attachCookiesToResponse,
@@ -27,12 +29,13 @@ const showCurrentUser = async (req, res) => {
 };
 
 const updateImage = async (req, res) => {
+  console.log("upd");
   const { id: userId } = req.params;
   const { image } = req.body;
   const user = await User.findById(userId);
   user.image = image;
   await user.save();
-  res.status(StatusCodes.OK).json({ msg: "Success" });
+  res.status(StatusCodes.OK).json({ image: image });
 };
 
 const updateUser = async (req, res) => {
@@ -63,6 +66,9 @@ const updateUserPassword = async (req, res) => {
     throw new CustomError.UnauthenticatedError("Invalid credentials");
   }
   user.password = newPassword;
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+
   await user.save();
   res
     .status(StatusCodes.OK)

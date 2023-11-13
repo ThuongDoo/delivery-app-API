@@ -34,13 +34,15 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-UserSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+// UserSchema.pre("save", async function (next) {
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = bcrypt.hash(this.password, salt);
+//   next();
+// });
 
 UserSchema.methods.comparePassword = async function (password) {
+  console.log(password);
+  console.log(this.password);
   const isMatch = await bcrypt.compare(password, this.password);
   return isMatch;
 };

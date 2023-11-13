@@ -5,6 +5,7 @@ const { default: mongoose } = require("mongoose");
 const Category = require("../models/Category");
 
 const getAllRestaurant = async (req, res) => {
+  console.log("res");
   const {
     name,
     latitude,
