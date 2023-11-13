@@ -10,12 +10,14 @@ const {
   createOrder,
   getAllOrder,
   getSingleOrder,
+  updateOrderStatus,
 } = require("../controllers/orderController");
 
 router
   .route("/:id")
   .post(authenticateUser, authorizePermissions("user"), createOrder)
-  .get(authenticateUser, authorizePermissions("user", "vendor"), getAllOrder);
+  .get(authenticateUser, authorizePermissions("user", "vendor"), getAllOrder)
+  .patch(authenticateUser, updateOrderStatus);
 
 router
   .route("/singleOrder/:id")

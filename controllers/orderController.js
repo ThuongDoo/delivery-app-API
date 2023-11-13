@@ -22,6 +22,20 @@ const createOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Success" });
 };
 
+const updateOrderStatus = async (req, res) => {
+  console.log("order");
+
+  const { id: orderId } = req.params;
+  const { status } = req.body;
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new CustomError.NotFoundError(`No order with ID: ${orderId}`);
+  }
+  order.status = status;
+  await order.save();
+  res.status(StatusCodes.OK).json({ msg: "updated status" });
+};
+
 const getAllOrder = async (req, res) => {
   const { id: userId } = req.params;
   const order = await Order.find({ user: userId }).populate([
@@ -37,7 +51,18 @@ const getAllOrder = async (req, res) => {
 
 const getSingleOrder = async (req, res) => {
   const { id: orderId } = req.params;
-  const order = await Order.findById(orderId);
+  const order = await Order.findById(orderId).populate([
+    {
+      path: "restaurant",
+      select: "name image",
+    },
+    { path: "items.food" },
+  ]);
   res.status(StatusCodes.OK).json(order);
 };
-module.exports = { createOrder, getAllOrder, getSingleOrder };
+module.exports = {
+  createOrder,
+  getAllOrder,
+  getSingleOrder,
+  updateOrderStatus,
+};

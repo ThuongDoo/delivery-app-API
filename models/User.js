@@ -27,6 +27,11 @@ const UserSchema = mongoose.Schema({
     enum: ["admin", "user", "vendor"],
     default: "user",
   },
+  image: {
+    type: String,
+    default:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/800px-Black_colour.jpg",
+  },
 });
 
 UserSchema.pre("save", async function (next) {

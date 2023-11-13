@@ -26,6 +26,15 @@ const showCurrentUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: req.user });
 };
 
+const updateImage = async (req, res) => {
+  const { id: userId } = req.params;
+  const { image } = req.body;
+  const user = await User.findById(userId);
+  user.image = image;
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: "Success" });
+};
+
 const updateUser = async (req, res) => {
   const { email, name } = req.body;
   if (!email || !name) {
@@ -66,4 +75,5 @@ module.exports = {
   showCurrentUser,
   updateUser,
   updateUserPassword,
+  updateImage,
 };

@@ -12,6 +12,7 @@ const {
   updateUser,
   updateUserPassword,
   showCurrentUser,
+  updateImage,
 } = require("../controllers/userController");
 
 // router.route("/").get(getAllUser).post(createUser);
@@ -27,6 +28,9 @@ router.route("/showMe").get(authenticateUser, showCurrentUser);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
 
-router.route("/:id").get(authenticateUser, getSingleUser);
+router
+  .route("/:id")
+  .get(authenticateUser, getSingleUser)
+  .patch(authenticateUser, updateImage);
 
 module.exports = router;
