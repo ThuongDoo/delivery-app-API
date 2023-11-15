@@ -40,10 +40,10 @@ app.use(
   })
 );
 app.use(helmet());
-const allowedOrigins = ["http://localhost:3000", "*"];
+// const allowedOrigins = ["http://localhost:3000", "*"];
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "*",
     credentials: true,
   })
 );
