@@ -30,7 +30,7 @@ const orderRouter = require("./routes/orderRoutes");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 // connectDB(process.env.MONGO_URL);
 
 app.use(
