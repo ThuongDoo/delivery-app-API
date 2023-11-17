@@ -40,10 +40,14 @@ app.use(
   })
 );
 app.use(helmet());
-// const allowedOrigins = ["http://localhost:3000", "*"];
+const allowedOrigins = [
+  "https://65573c76cf36d47e27c8f965--fabulous-selkie-00771a.netlify.app",
+  "https://example.com",
+  // Thêm các nguồn khác nếu cần
+];
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
