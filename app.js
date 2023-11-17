@@ -41,8 +41,8 @@ app.use(
 );
 app.use(helmet());
 const allowedOrigins = [
-  "https://65573c76cf36d47e27c8f965--fabulous-selkie-00771a.netlify.app",
-  "https://example.com",
+  "https://fabulous-selkie-00771a.netlify.app/",
+  "http://localhost:3000",
   // Thêm các nguồn khác nếu cần
 ];
 app.use(
