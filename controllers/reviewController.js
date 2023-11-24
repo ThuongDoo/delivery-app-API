@@ -1,10 +1,15 @@
 const { StatusCodes } = require("http-status-codes");
 const Restaurant = require("../models/Restaurant");
+const User = require("../models/User");
 const CustomError = require("../errors");
 
 const getRestaurantReview = async (req, res) => {
   const { id: restaurantId } = req.params;
-  const restaurant = await Restaurant.findById(restaurantId).select("reviews");
+  const restaurant = await Restaurant.findById(restaurantId)
+    .select("reviews")
+    .populate({
+      path: "reviews.user",
+    });
   if (!restaurant) {
     throw new CustomError.NotFoundError(
       `No restaurant with id: ${restaurantId}`
@@ -22,7 +27,12 @@ const createReview = async (req, res) => {
       `No restaurant with id: ${restaurantId}`
     );
   }
+  const userrr = await User.findById(user);
+  if (!userrr) {
+    console.log("no user");
+  }
   const newReview = { user, rating, comment };
+  console.log(newReview);
   restaurant.reviews.push(newReview);
   await restaurant.save();
   res
@@ -32,7 +42,11 @@ const createReview = async (req, res) => {
 
 const getSingleReview = async (req, res) => {
   const { restaurantId, userId } = req.params;
-  const restaurant = await Restaurant.findById(restaurantId).select("reviews");
+  const restaurant = await Restaurant.findById(restaurantId)
+    .select("reviews")
+    .populate({
+      path: "reviews.user",
+    });
   if (!restaurant) {
     throw new CustomError.NotFoundError(
       `No restaurant with id: ${restaurantId}`
