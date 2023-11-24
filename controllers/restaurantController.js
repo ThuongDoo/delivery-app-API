@@ -71,18 +71,20 @@ const getAllRestaurant = async (req, res) => {
   let restaurant;
   if (populate) {
     const populateList = populate.split(",");
-    restaurant = await result.populate({ path: "category" });
+    restaurant = await result.populate({ path: "category" }).select("-reviews");
   } else {
-    restaurant = await result;
+    restaurant = await result.select("-reviews");
   }
   res.status(StatusCodes.OK).json({ restaurant, nbHits: restaurant.length });
 };
 
 const getSingleRestaurant = async (req, res) => {
   const { id: restaurantId } = req.params;
-  const restaurant = await Restaurant.findOne({ _id: restaurantId }).populate({
-    path: "food",
-  });
+  const restaurant = await Restaurant.findOne({ _id: restaurantId })
+    .populate({
+      path: "food",
+    })
+    .select("-reviews");
   if (!restaurant) {
     throw new CustomError.NotFoundError(
       `No restaurant with id: ${restaurantId}`
