@@ -1,5 +1,28 @@
 const mongoose = require("mongoose");
 
+const ReviewSchema = mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide the user for the review"],
+    },
+    rating: {
+      type: Number,
+      required: [true, "Please provide a rating for the review"],
+      min: [1, "Rating must be at least 1"],
+      max: [5, "Rating must not exceed 5"],
+    },
+    comment: {
+      type: String,
+      maxlength: 500,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const RestaurantSchema = mongoose.Schema(
   {
     name: {
@@ -25,6 +48,7 @@ const RestaurantSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    reviews: [ReviewSchema],
     food: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -53,5 +77,10 @@ const RestaurantSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+RestaurantSchema.pre("save", function (next) {
+  this.numOfReviews = this.reviews.length;
+  next();
+});
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);
