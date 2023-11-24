@@ -80,6 +80,16 @@ const RestaurantSchema = mongoose.Schema(
 
 RestaurantSchema.pre("save", function (next) {
   this.numOfReviews = this.reviews.length;
+
+  // Tính toán averageRating
+  const sumOfRatings = this.reviews.reduce(
+    (total, review) => total + review.rating,
+    0
+  );
+  console.log("sum", sumOfRatings);
+  this.averageRating =
+    this.numOfReviews > 0 ? sumOfRatings / this.numOfReviews : 0;
+  console.log("avg", this.averageRating);
   next();
 });
 

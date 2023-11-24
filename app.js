@@ -25,6 +25,7 @@ const categoryRouter = require("./routes/categoryRoutes");
 const userRouter = require("./routes/userRoutes");
 const basketRouter = require("./routes/basketRoutes");
 const orderRouter = require("./routes/orderRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
 
 // middlewares
 const notFound = require("./middlewares/notFound");
@@ -68,6 +69,7 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/basket", basketRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/review", reviewRouter);
 
 app.use(notFound);
 app.use(errorHandler);
