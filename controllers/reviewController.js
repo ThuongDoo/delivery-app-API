@@ -27,13 +27,19 @@ const createReview = async (req, res) => {
       `No restaurant with id: ${restaurantId}`
     );
   }
-  const userrr = await User.findById(user);
-  if (!userrr) {
-    console.log("no user");
+  if (!restaurant.reviews) {
+    restaurant.reviews = [];
   }
+  const review = restaurant.reviews.find(
+    (item) => item.user.toString() === user
+  );
   const newReview = { user, rating, comment };
-  console.log(newReview);
-  restaurant.reviews.push(newReview);
+  if (!review) {
+    restaurant.reviews.push(newReview);
+  } else {
+    review.rating = rating;
+    review.comment = comment;
+  }
   await restaurant.save();
   res
     .status(StatusCodes.OK)
@@ -53,9 +59,9 @@ const getSingleReview = async (req, res) => {
     );
   }
   const review = restaurant.reviews.find(
-    (item) => item.user.toString() === userId
+    (item) => item.user._id.toString() === userId
   );
-  return res.status(StatusCodes.OK).json({ success: true, review });
+  return res.status(StatusCodes.OK).json({ success: true, review: review });
 };
 
 const updateReview = async (req, res) => {

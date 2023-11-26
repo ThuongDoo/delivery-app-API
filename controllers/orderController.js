@@ -36,28 +36,53 @@ const updateOrderStatus = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "updated status" });
 };
 
+const getRestaurantOrder = async (req, res) => {
+  const { id: restaurantId } = req.params;
+  const order = await Order.find({ restaurant: restaurantId })
+    .populate([
+      {
+        path: "items.food",
+      },
+      {
+        path: "user",
+      },
+    ])
+    .sort({ updatedAt: 1 });
+  res.status(StatusCodes.OK).json(order);
+};
+
 const getAllOrder = async (req, res) => {
   const { id: userId } = req.params;
-  const order = await Order.find({ user: userId }).populate([
-    {
-      path: "restaurant",
-      select: "name image",
-    },
-    { path: "items.food", select: "name" },
-  ]);
-
+  const { status } = req.query;
+  const queryObject = { user: userId };
+  if (status) {
+    queryObject.status = status;
+  }
+  const order = await Order.find(queryObject)
+    .populate([
+      {
+        path: "restaurant",
+        select: "name image",
+      },
+      { path: "items.food", select: "name" },
+    ])
+    .sort({ updatedAt: -1 });
+  console.log("order");
+  console.log(order);
   res.status(StatusCodes.OK).json(order);
 };
 
 const getSingleOrder = async (req, res) => {
   const { id: orderId } = req.params;
-  const order = await Order.findById(orderId).populate([
-    {
-      path: "restaurant",
-      select: "name image",
-    },
-    { path: "items.food" },
-  ]);
+  const order = await Order.findById(orderId)
+    .populate([
+      {
+        path: "restaurant",
+        select: "name image",
+      },
+      { path: "items.food" },
+    ])
+    .sort({ updatedAt: -1 });
   res.status(StatusCodes.OK).json(order);
 };
 module.exports = {
@@ -65,4 +90,5 @@ module.exports = {
   getAllOrder,
   getSingleOrder,
   updateOrderStatus,
+  getRestaurantOrder,
 };

@@ -11,6 +11,7 @@ const {
   getAllOrder,
   getSingleOrder,
   updateOrderStatus,
+  getRestaurantOrder,
 } = require("../controllers/orderController");
 
 router
@@ -26,4 +27,8 @@ router
     authorizePermissions("user", "vendor"),
     getSingleOrder
   );
+
+router
+  .route("/restaurant/:id")
+  .get(authenticateUser, authorizePermissions("vendor"), getRestaurantOrder);
 module.exports = router;

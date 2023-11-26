@@ -37,18 +37,19 @@ app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMS: 15 * 60 * 1000,
-    max: 600,
+    max: 6000,
   })
 );
 app.use(helmet());
 const allowedOrigins = [
   "https://fabulous-selkie-00771a.netlify.app/",
   "http://localhost:3000",
+  "*",
   // Thêm các nguồn khác nếu cần
 ];
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
