@@ -72,6 +72,7 @@ const getAllRestaurant = async (req, res) => {
   if (populate) {
     const populateList = populate.split(",");
     restaurant = await result.populate({ path: "category" }).select("-reviews");
+    console.log("populate");
   } else {
     restaurant = await result.select("-reviews");
   }
