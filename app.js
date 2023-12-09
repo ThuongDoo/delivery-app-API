@@ -42,8 +42,9 @@ app.use(
 );
 app.use(helmet());
 const allowedOrigins = [
-  "https://fabulous-selkie-00771a.netlify.app/",
+  // "https://fabulous-selkie-00771a.netlify.app/",
   "http://localhost:3000",
+  "https://thuongdo-delivery-dashboard.netlify.app",
   "*",
   // Thêm các nguồn khác nếu cần
 ];

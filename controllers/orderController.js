@@ -13,7 +13,10 @@ const createOrder = async (req, res) => {
       items: restaurant.items,
     });
     const total = restaurant.items.reduce((acc, item) => {
-      return acc + item.food.price * item.quantity;
+      return (
+        acc +
+        item.food.price * (1 - item.food.discountPercentage) * item.quantity
+      );
     }, 0);
 
     order.total = total + 15000;

@@ -15,6 +15,7 @@ const attachCookiesToResponse = ({ res, user }) => {
   res.cookie("token", token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
+    // expires: new Date(Date.now() + expiresIn * 1000),
     // secure: process.env.NODE_ENV === "production",
     secure: false,
     signed: true,
